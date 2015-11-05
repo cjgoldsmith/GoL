@@ -23,19 +23,25 @@ class GameOfLife:
         :return:
         '''
 
-        # add rows to top and bottom if life has reached an edge.
-        for y in self.universe[0]:
-            if y == LifeRule.ALIVE:
-                self._insert_dead_row(0)
-                break
-        for y in self.universe[len(self.universe)-1]:
-            if y == LifeRule.ALIVE:
-                self._insert_dead_row(len(self.universe))
-                break
+        # add rows to top / bottom
+        self._check_tb_edge(0)
+        self._check_tb_edge(len(self.universe)-1)
 
         # add rows to left and right
         self._check_side_edge(0)
         self._check_side_edge(len(self.universe[0])-1)
+
+    def _check_tb_edge(self, idx):
+        """
+        Check top / bottom edges
+        :param idx: row index value
+        """
+        for y in self.universe[idx]:
+            if y == LifeRule.ALIVE:
+                idx = idx+1 if idx == (len(self.universe)-1) else idx
+                self._insert_dead_row(idx)
+                return
+
 
     def _check_side_edge(self, idx):
         for row in self.universe:
@@ -46,7 +52,7 @@ class GameOfLife:
 
     def _insert_dead_column(self, idx):
         '''
-        Insearts a dead column at the given index.
+        Inserts a dead column at the given index.
         '''
         for r in self.universe:
             r.insert(idx, LifeRule.DEAD)
