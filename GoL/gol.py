@@ -92,6 +92,19 @@ class GameOfLife:
         self._check_side_edge(self.LEFT)
         self._check_side_edge(self.RIGHT)
 
+        if(self.height%2):
+            self._insert_dead_row(self.BOTTOM)
+        if(self.width%2):
+            self._insert_dead_column(self.RIGHT)
+
+        while(self.height < self.width):
+            self._insert_dead_row(self.TOP)
+            self._insert_dead_row(self.BOTTOM)
+
+        while(self.width < self.height):
+            self._insert_dead_column(self.LEFT)
+            self._insert_dead_column(self.RIGHT)
+
     def _check_tb_edge(self, idx):
         """
         Check top / bottom edges

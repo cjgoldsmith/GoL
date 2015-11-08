@@ -11,7 +11,7 @@ Game of Life implementation in python
 * The class is expected to be callable and must return LifeRule.ALIVE, LifeRule.DEAD or LifeRule.INERT
 * The call is made with one positional argument which represents a 3x3 adjacency board with the position in question occupying the center.
   * Return values of ALIVE or DEAD will stop further rules from executing
-  * Return value of INERT suggests that this rule does not influence the board.
+  * Return value of INERT suggests that this rule does not influence the board, the plugin chain will continue to execute.
 
 
 ## Considerations
