@@ -59,7 +59,7 @@ class TestRule(unittest.TestCase):
             [LifeRule.ALIVE, LifeRule.ALIVE, LifeRule.DEAD],
             [LifeRule.DEAD for x in range(3)],
         ]
-        self.assertEqual(LifeRule.DEAD, RuleUnderpopulation(adj))
+        self.assertEqual(LifeRule.DEAD, RuleUnderpopulation()(adj))
 
 from .rules import RuleOvercrowding
 class TestRuleOverCrowding(unittest.TestCase):
@@ -72,7 +72,7 @@ class TestRuleOverCrowding(unittest.TestCase):
             [LifeRule.ALIVE, LifeRule.ALIVE, LifeRule.DEAD],
             [LifeRule.DEAD for x in range(3)],
         ]
-        self.assertEqual(LifeRule.DEAD, RuleOvercrowding(adj))
+        self.assertEqual(LifeRule.DEAD, RuleOvercrowding()(adj))
 
 from .rules import RuleLive
 class TestRuleLive(unittest.TestCase):
@@ -85,7 +85,7 @@ class TestRuleLive(unittest.TestCase):
             [LifeRule.DEAD, LifeRule.ALIVE, LifeRule.DEAD],
             [LifeRule.DEAD for x in range(3)],
         ]
-        self.assertEqual(LifeRule.ALIVE, RuleLive(adj))
+        self.assertEqual(LifeRule.ALIVE, RuleLive()(adj))
 
 from .rules import RuleNewLife
 class TestRuleNewLife(unittest.TestCase):
@@ -98,7 +98,7 @@ class TestRuleNewLife(unittest.TestCase):
             [LifeRule.DEAD for x in range(3)],
             [LifeRule.DEAD for x in range(3)],
         ]
-        self.assertEqual(LifeRule.ALIVE, RuleNewLife(adj))
+        self.assertEqual(LifeRule.ALIVE, RuleNewLife()(adj))
 
 
 if __name__ == '__main__':
