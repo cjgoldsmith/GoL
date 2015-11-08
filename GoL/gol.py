@@ -1,9 +1,18 @@
 from .rules import LifeRule
 
+import copy
+
 class ConfigException(Exception):
     pass
 
 class GameOfLife:
+    """
+    Game of life grid object.
+
+    Represents a game of life.
+    Grid coordinates originate at 0,0 but represent the
+    IVth quadrant not the 1st ( y is inverted ).
+    """
 
     TOP = "top"
     BOTTOM = "bottom"
@@ -28,18 +37,45 @@ class GameOfLife:
         self.width = len(self.universe[0])
         self.height = len(self.universe)
 
+    @property
+    def heat_death(self):
+        '''
+        Indicates weather or not this universe is completely dead.
+        :return:
+        '''
+        for r in self.universe:
+            for c in r:
+                if c == LifeRule.ALIVE:
+                    return False
+        return True
+
+
+
     def turn(self):
         self._check_edges()
-        for x, row in enumerate(self.universe):
-            for y, e in enumerate(row):
+        self.cached_universe = [r[:] for r in self.universe]
+        for y, row in enumerate(self.universe):
+            for x, e in enumerate(row):
                 try:
                     adj = self._build_adjacency(x, y)
-                    #for rule in LifeRule.plugins:
-                        #self._set_grid(rule(adj))
-                except IndexError:
+                    for rule in LifeRule.plugins:
+                        r = rule()
+                        self._set_grid(x, y, r(adj ))
+
+                except IndexError as e:
                     # this type of error indicates operation on an edge
                     # all original edges have been previously expanded.
                     pass
+
+    def _set_grid(self, x, y, value):
+        '''
+        Sets the value at a given grid location
+        :param value:
+        :return:
+        '''
+        if value not in (LifeRule.ALIVE, LifeRule.DEAD):
+            return
+        self.universe[y][x] = value
 
     def _check_edges(self):
         '''
@@ -116,17 +152,21 @@ class GameOfLife:
         '''
 
         # these are safe to skip because convetions assume that
-        if x == 0 or x >= (len(self.universe)-1) or y == 0 or y >= (len(self.universe[0])-1):
+        u = self.cached_universe
+        if x == 0 or x >= self.height-1 or y == 0 or y >= self.width-1:
             raise IndexError("Cannot build adjacency grid using edge index")
 
-        return [self.universe[x-1][y-1:3],
-                self.universe[x][y-1:3],
-                self.universe[x+1][y-1:3]]
+        sx = x-1
+        return [u[y-1][sx:(sx+3)],
+                u[y][sx:(sx+3)],
+                u[y+1][sx:(sx+3)]]
 
     def __repr__(self):
         u = "\n<------------------>\n"
         for r in self.universe:
-            u = u + str(r) + "\n"
+            for c in r:
+                u = u + " X " if c == LifeRule.ALIVE else u + " O "
+            u = u + "\n"
         u += "<------------------>\n"
         return u
 

@@ -4,7 +4,6 @@ class RulePluginRegister(type):
     '''
 
     def __init__(cls, name, bases, attrs):
-        print(cls)
         if not hasattr(cls, 'plugins'):
             cls.plugins = []
         else:
@@ -28,8 +27,8 @@ class LifeRule(metaclass=RulePluginRegister):
         center = adj[1][1]
         count = 0
         for r in adj:
-            for y in r:
-                count  = count + 1 if y == self.ALIVE else count
+            for c in r:
+                count  = count + 1 if c == self.ALIVE else count
         count  = count - 1 if center == self.ALIVE else count
         return count
 

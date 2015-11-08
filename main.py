@@ -5,7 +5,11 @@ if __name__ == "__main__":
 
     gol = GameOfLife()
     while True:
-        sleep(4)
-        gol.turn()
         print(gol)
+        gol.turn()
+        if gol.heat_death:
+            print(gol)
+            print(":GAME OVER:\n")
+            break
+        sleep(2)
 
