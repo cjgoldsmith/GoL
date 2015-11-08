@@ -1,18 +1,20 @@
-class RulePluginMetaClass(type):
+class RulePluginRegister(type):
     '''
     Provides plugin capability for rule generation
     '''
 
-    def _init_(cls):
+    def __init__(cls, name, bases, attrs):
+        print(cls)
         if not hasattr(cls, 'plugins'):
             cls.plugins = []
         else:
             cls.plugins.append(cls)
 
 
-class LifeRule(metaclass=RulePluginMetaClass):
+class LifeRule(metaclass=RulePluginRegister):
     ALIVE = 1
     DEAD = -1
+    INERT = 0
     '''
     Base class for life rules. Registers new rules.
     '''

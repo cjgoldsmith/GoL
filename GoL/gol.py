@@ -34,6 +34,8 @@ class GameOfLife:
             for y, e in enumerate(row):
                 try:
                     adj = self._build_adjacency(x, y)
+                    #for rule in LifeRule.plugins:
+                        #self._set_grid(rule(adj))
                 except IndexError:
                     # this type of error indicates operation on an edge
                     # all original edges have been previously expanded.

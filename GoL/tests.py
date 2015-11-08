@@ -48,6 +48,58 @@ class TestGameOfLife(unittest.TestCase):
             adj = self.gol._build_adjacency(0,0)
 
 
+from .rules import RuleUnderpopulation
+class TestRule(unittest.TestCase):
+
+    def test_rule(self):
+
+        # only 1 live neighbor
+        adj = [
+            [LifeRule.DEAD for x in range(3)],
+            [LifeRule.ALIVE, LifeRule.ALIVE, LifeRule.DEAD],
+            [LifeRule.DEAD for x in range(3)],
+        ]
+        self.assertEqual(LifeRule.DEAD, RuleUnderpopulation(adj))
+
+from .rules import RuleOvercrowding
+class TestRuleOverCrowding(unittest.TestCase):
+
+    def test_rule(self):
+
+        # more than 3 living neighbors
+        adj = [
+            [LifeRule.ALIVE for x in range(3)],
+            [LifeRule.ALIVE, LifeRule.ALIVE, LifeRule.DEAD],
+            [LifeRule.DEAD for x in range(3)],
+        ]
+        self.assertEqual(LifeRule.DEAD, RuleOvercrowding(adj))
+
+from .rules import RuleLive
+class TestRuleLive(unittest.TestCase):
+
+    def test_rule(self):
+
+        # 2-3 live neighbors
+        adj = [
+            [LifeRule.ALIVE for x in range(3)],
+            [LifeRule.DEAD, LifeRule.ALIVE, LifeRule.DEAD],
+            [LifeRule.DEAD for x in range(3)],
+        ]
+        self.assertEqual(LifeRule.ALIVE, RuleLive(adj))
+
+from .rules import RuleNewLife
+class TestRuleNewLife(unittest.TestCase):
+
+    def test_rule(self):
+
+        # not alive but with 3 neighbors that are.
+        adj = [
+            [LifeRule.ALIVE for x in range(3)],
+            [LifeRule.DEAD for x in range(3)],
+            [LifeRule.DEAD for x in range(3)],
+        ]
+        self.assertEqual(LifeRule.ALIVE, RuleNewLife(adj))
+
 
 if __name__ == '__main__':
     unittest.main()
